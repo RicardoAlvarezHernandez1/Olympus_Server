@@ -10,6 +10,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import { AdminContext } from "../context/AdminContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import appColors from "../assets/styles/appColors";
+import LoginScreen from "../screens/LoginScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -74,7 +75,7 @@ const CustomDrawer = () => {
               ),
             }}
           />
-          {/* <Drawer.Screen
+          <Drawer.Screen
             name="Login"
             component={LoginScreen}
             options={{
@@ -82,7 +83,7 @@ const CustomDrawer = () => {
                 <Ionicons name={"log-in-outline"} size={25} color={"black"} />
               ),
             }}
-          /> */}
+          />
         </Drawer.Navigator>
       )}
     </>
