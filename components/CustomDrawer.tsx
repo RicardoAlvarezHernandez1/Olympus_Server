@@ -11,6 +11,8 @@ import { AdminContext } from "../context/AdminContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import appColors from "../assets/styles/appColors";
 import LoginScreen from "../screens/LoginScreen";
+import AdminScreen from "../screens/AdminScreen";
+import UpdateScreen from "../screens/UpdateScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -42,6 +44,19 @@ const CustomDrawer = () => {
             initialRouteName="WelcomeUser"
             screenOptions={drawerNavigatorScreenOptions}
           >
+             <Drawer.Screen
+              name="Admin"
+              component={AdminScreen}
+              options={{
+                drawerIcon: () => (
+                  <Ionicons
+                    name={"people-circle-outline"}
+                    size={25}
+                    color={"black"}
+                  />
+                ),
+              }}
+            />
             <Drawer.Screen
               name="Registration"
               component={RegisterScreen}
@@ -83,8 +98,12 @@ const CustomDrawer = () => {
                 <Ionicons name={"log-in-outline"} size={25} color={"black"} />
               ),
             }}
-          />
-        </Drawer.Navigator>
+          />          
+          <Drawer.Screen 
+            name="Update" 
+            component={UpdateScreen} 
+            options={{ drawerLabel: () => null }} />
+          </Drawer.Navigator>
       )}
     </>
   );

@@ -12,8 +12,12 @@ import AppColors from "../assets/styles/appColors";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AdminContext } from "../context/AdminContext";
 import { loginAdmin } from "../services/OlympusServices";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
-const LoginScreen = () => {
+type LoginScreenProps = {
+  navigation: NavigationProp<ParamListBase>;
+};
+const LoginScreen = ({ navigation}: LoginScreenProps ) => {
   const { isLogged, toggleIsLogged } = React.useContext(AdminContext);
   const { admin, setAdminName } = React.useContext(AdminContext);
   const [password, setPassword] = React.useState("");
@@ -37,6 +41,7 @@ const LoginScreen = () => {
           const password = data.adminPassword;
           if (adminPassword === password) {
             toggleIsLogged();
+            navigation.navigate("Admin");
           } else {
             window.alert("El usuario o la contraseña son incorrectos");
           }

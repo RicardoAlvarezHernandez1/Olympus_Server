@@ -1,6 +1,7 @@
+import { UserInterface } from "../assets/interfaces/UserInterface";
 import { IpDirection } from "./IpDirection";
 
-const API_URL = `http://192.168.1.33:8081/olympus/v1`;
+const API_URL = `http://192.168.11.43:8082/olympus/v1`;
 const REGISTRATION_PATH = "/admin";
 
 export const registerAdmin = async (
@@ -35,3 +36,61 @@ export const loginAdmin = async (adminName: string): Promise<Response> => {
 
   return response;
 };
+
+export const getUsers = async (): Promise<UserInterface[]> => {
+  try {
+    const response = await fetch(`${API_URL}/user`, {
+      method: "GET"
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al obtener usuarios");
+    }
+
+    const users: UserInterface[] = await response.json();
+    return users;
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    throw error;
+  }
+}
+
+export const deleteUser = async (
+  userId: number,
+): Promise<number> => {
+  const response = await fetch(`${API_URL}/user/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    }
+  });
+
+  return response.status;
+};
+
+export const updateUser = async (
+  userdId: number,
+  userName: string,
+  userMail: string,
+  userPassword: string,
+  userHeight: number,
+  userWeight: number
+): Promise<Number> => {
+  const response = await fetch(`${API_URL}/user/${userdId}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userName: `${userName}`,
+      userMail: `${userMail}`,
+      userPassword: `${userPassword}`,
+      userHeight: `${userHeight}`,
+      userWeight: `${userWeight}`
+    }),
+  })
+
+  return response.status
+}
