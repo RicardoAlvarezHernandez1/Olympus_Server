@@ -56,7 +56,7 @@ const User = ({ id, name, password, mail, height, weight, navigation }: { id: nu
                     color={"black"}
                 />
             </Pressable>
-            <Pressable onPress={() => navigation.navigate("Update")}>
+            <Pressable onPress={() => navigation.navigate("Update", { navigation, id, name, password, mail, height, weight })}>
                 <Ionicons
                     name={"pencil-outline"}
                     size={30}

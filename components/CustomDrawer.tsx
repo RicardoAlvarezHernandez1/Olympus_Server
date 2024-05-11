@@ -70,6 +70,10 @@ const CustomDrawer = () => {
                 ),
               }}
             />
+            <Drawer.Screen 
+            name="Update" 
+            component={UpdateScreen} 
+            options={{ drawerLabel: () => null }} />
           </Drawer.Navigator>
         </>
       ) : (
@@ -99,10 +103,7 @@ const CustomDrawer = () => {
               ),
             }}
           />          
-          <Drawer.Screen 
-            name="Update" 
-            component={UpdateScreen} 
-            options={{ drawerLabel: () => null }} />
+          
           </Drawer.Navigator>
       )}
     </>

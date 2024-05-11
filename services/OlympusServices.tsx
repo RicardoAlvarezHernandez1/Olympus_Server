@@ -1,7 +1,7 @@
 import { UserInterface } from "../assets/interfaces/UserInterface";
 import { IpDirection } from "./IpDirection";
 
-const API_URL = `http://192.168.11.43:8082/olympus/v1`;
+const API_URL = `http://192.168.1.65:8082/olympus/v1`;
 const REGISTRATION_PATH = "/admin";
 
 export const registerAdmin = async (
@@ -76,7 +76,7 @@ export const updateUser = async (
   userPassword: string,
   userHeight: number,
   userWeight: number
-): Promise<Number> => {
+): Promise<number> => {
   const response = await fetch(`${API_URL}/user/${userdId}`, {
     method: "PUT",
     headers: {
@@ -87,8 +87,8 @@ export const updateUser = async (
       userName: `${userName}`,
       userMail: `${userMail}`,
       userPassword: `${userPassword}`,
-      userHeight: `${userHeight}`,
-      userWeight: `${userWeight}`
+      userHeight: userHeight,
+      userWeight: userWeight
     }),
   })
 

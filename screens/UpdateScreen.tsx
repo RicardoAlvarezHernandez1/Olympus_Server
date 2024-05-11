@@ -5,6 +5,7 @@ import {
     ImageBackground,
     Image,
     TextInput,
+    Pressable,
   } from "react-native";
   import React from "react";
   import AppColors from "../assets/styles/appColors";
@@ -14,39 +15,41 @@ import {
     ParamListBase,
   } from "@react-navigation/native";
   import { createNativeStackNavigator } from "@react-navigation/native-stack";
-  import { TouchableOpacity } from "react-native-gesture-handler";
+  import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
   import { AdminContext } from "../context/AdminContext";
-  import { registerAdmin } from "../services/OlympusServices";
+  import { registerAdmin, updateUser } from "../services/OlympusServices";
   import { Ionicons } from "@expo/vector-icons";
   
-  type WelcomeScreenProps = {
+  type User = {
     navigation: NavigationProp<ParamListBase>;
+    id: number;
+    name: string;
+    password: string;
+    mail: string;
+    weight: number;
+    height: number;
   };
-  const UpdateScreen = ({ navigation }: WelcomeScreenProps) => {
-    const { admin, setAdminName } = React.useContext(AdminContext);
-    const [adminEmail, setadminEmail] = React.useState("");
-    const [adminPassword, setadminPassword] = React.useState("");
-  
-    function setAdmin(text: string) {
-      setAdminName(text);
-    }
-    function setEmail(text: string) {
-      setadminEmail(text);
-    }
-    function setPassword(text: string) {
-      setadminPassword(text);
-    }
+  const UpdateScreen = ({ navigation, id, name, password, mail, weight, height }: User) => {
+    const [userId, setId] = React.useState(id)
+    const [userName, setUsername] = React.useState(name);
+    const [userMail, setUserMail] = React.useState(mail);
+    const [userPassword, setUserPassword] = React.useState(password);
+    const [userHeight, setHeight] = React.useState(height);
+    const [userWeight, setWeight] = React.useState(weight);
   
     const onClickButton = (
-      adminName: string,
-      adminEmail: string,
-      adminPassword: string
+      id: number,
+      name: string,
+      mail: string,
+      password: string,
+      height: number,
+      weight: number,
     ) => {
       {
-        if (adminName == "" || adminEmail == "" || adminPassword == "") {
+        if (name == "" || mail == "" || password == "" || height == null || weight == null) {
           window.alert("Por favor , rellene los campos necesarios");
         } else {
-          registerAdmin(adminName, adminEmail, adminPassword)
+            updateUser(id, name, mail, password, height, weight)
             .then((status) => {
               if (status == 400) {
                 window.alert("Error : no se a podido registrar el usuario");
@@ -68,40 +71,46 @@ import {
         >
           <View style={{ ...styles.boxShadow, ...styles.welcomeContainer }}>
             <Text style={styles.welcomeTitle}>
-              ¡ WELCOME TO OLYMPUS-APP FOR ADMINS !
+                Editing user
             </Text>
-            <Text style={styles.description}>Don't have an account?</Text>
-            <Text style={styles.description}>You can register here</Text>
+            <ScrollView>
+            <Text style={styles.description}>Name</Text>
             <TextInput
-              onChangeText={(text) => setAdmin(text)}
-              placeholder="Admin Name..."
+              onChangeText={(text) => setUsername(text)}
+              placeholder="User Name..."
               style={styles.inputStyle}
             ></TextInput>
+            <Text style={styles.description}>Mail</Text>
             <TextInput
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={(text) => setUserMail(text)}
               placeholder="Email..."
               style={styles.inputStyle}
             ></TextInput>
+            <Text style={styles.description}>Password</Text>
             <TextInput
-              onChangeText={(text) => setPassword(text)}
+              onChangeText={(text) => setUserPassword(text)}
               placeholder="Password..."
               style={styles.inputStyle}
               secureTextEntry={true}
             ></TextInput>
-            <TouchableOpacity
-              style={{ ...styles.touchable, ...styles.boxShadow }}
-              onPress={() =>
-                onClickButton(`${admin}`, `${adminEmail}`, `${adminPassword}`)
-              }
-            >
-              <Text style={styles.buttonContent}>REGISTER</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ ...styles.login, ...styles.boxShadow }}
-              onPress={() => navigation.navigate("Login")}
-            >
-              <Text style={styles.buttonContent}>JUST LOGIN</Text>
-            </TouchableOpacity>
+            <Text style={styles.description}>Weight</Text>
+            <TextInput
+              keyboardType='numeric'
+              onChangeText={(text) => setWeight(parseFloat(text))}
+              placeholder="Weight..."
+              style={styles.inputStyle}
+            ></TextInput>
+            <Text style={styles.description}>Height</Text>
+            <TextInput
+              onChangeText={(text) => setHeight(parseFloat(text))}
+              placeholder="Height..."
+              style={styles.inputStyle}
+            ></TextInput>
+            <Pressable onPress={() => onClickButton(userId, userName, userPassword, userMail, userHeight, userWeight)}>
+              <Text>Hola</Text>
+            </Pressable>
+            
+            </ScrollView>
           </View>
         </ImageBackground>
       </View>
