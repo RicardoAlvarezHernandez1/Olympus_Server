@@ -64,7 +64,7 @@ const User = ({
 
   const onClickUpdate = () => {
     setId(id);
-    navigation.navigate("Update");
+    navigation.navigate("Update", {navigation, loadUsers});
   };
 
   return (

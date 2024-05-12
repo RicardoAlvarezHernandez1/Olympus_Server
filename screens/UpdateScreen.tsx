@@ -3,26 +3,32 @@ import {
   Text,
   View,
   ImageBackground,
-  Image,
   TextInput,
   Pressable,
 } from "react-native";
 import React from "react";
 import AppColors from "../assets/styles/appColors";
 import {
-  NavigationContainer,
   NavigationProp,
   ParamListBase,
   RouteProp,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { AdminContext } from "../context/AdminContext";
-import { registerAdmin, updateUser } from "../services/OlympusServices";
-import { Ionicons } from "@expo/vector-icons";
+import {  updateUser } from "../services/OlympusServices";
 
-const UpdateScreen = () => {
+
+
+// Define el tipo de las rutas
+type RootStackParamList = {
+  Update: { loadUsers: Function, navigation: NavigationProp<ParamListBase> };
+};
+
+const UpdateScreen = ({ route }: { route: RouteProp<RootStackParamList, "Update"> }) => {
   const { userId } = React.useContext(AdminContext);
+  const { loadUsers, navigation } = route.params;
+
 
   const [user_Name, setUsername] = React.useState("");
   const [user_Mail, setUserMail] = React.useState("");
@@ -54,7 +60,9 @@ const UpdateScreen = () => {
               window.alert("Error : no se a podido registrar el usuario");
               return null;
             } else {
-              window.alert("Registro exitoso");
+              window.alert("Succesfully update");
+              loadUsers()
+              navigation.navigate("Admin")
             }
           })
           .catch((err) => console.log(err));
