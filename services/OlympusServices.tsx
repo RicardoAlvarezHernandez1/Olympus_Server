@@ -1,7 +1,7 @@
 import { UserInterface } from "../assets/interfaces/UserInterface";
 import { IpDirection } from "./IpDirection";
 
-const API_URL = `http://192.168.1.65:8082/olympus/v1`;
+const API_URL = `http://${IpDirection()}:8081/olympus/v1`;
 const REGISTRATION_PATH = "/admin";
 
 export const registerAdmin = async (
@@ -40,7 +40,7 @@ export const loginAdmin = async (adminName: string): Promise<Response> => {
 export const getUsers = async (): Promise<UserInterface[]> => {
   try {
     const response = await fetch(`${API_URL}/user`, {
-      method: "GET"
+      method: "GET",
     });
 
     if (!response.ok) {
@@ -53,44 +53,44 @@ export const getUsers = async (): Promise<UserInterface[]> => {
     console.error("Error al obtener usuarios:", error);
     throw error;
   }
-}
+};
 
-export const deleteUser = async (
-  userId: number,
-): Promise<number> => {
+export const deleteUser = async (userId: number): Promise<number> => {
   const response = await fetch(`${API_URL}/user/${userId}`, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-    }
+    },
   });
 
   return response.status;
 };
 
 export const updateUser = async (
-  userdId: number,
-  userName: string,
-  userMail: string,
-  userPassword: string,
-  userHeight: number,
-  userWeight: number
+  id: number,
+  name: string,
+  mail: string,
+  password: string,
+  height: number,
+  weight: number
 ): Promise<number> => {
-  const response = await fetch(`${API_URL}/user/${userdId}`, {
+  console.log("Log desde el servicio : ", id);
+
+  const response = await fetch(`${API_URL}/user/${id}`, {
     method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userName: `${userName}`,
-      userMail: `${userMail}`,
-      userPassword: `${userPassword}`,
-      userHeight: userHeight,
-      userWeight: userWeight
+      userName: `${name}`,
+      userMail: `${mail}`,
+      userPassword: `${password}`,
+      userHeight: height,
+      userWeight: weight,
     }),
-  })
+  });
 
-  return response.status
-}
+  return response.status;
+};

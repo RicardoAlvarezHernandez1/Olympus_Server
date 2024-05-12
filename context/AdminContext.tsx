@@ -5,6 +5,8 @@ type adminContextType = {
   admin: string;
   setAdminName: Function;
   toggleIsLogged: Function;
+  userId: number;
+  setId: Function;
 };
 
 const AdminContext = React.createContext({} as adminContextType);
