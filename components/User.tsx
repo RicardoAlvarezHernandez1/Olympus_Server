@@ -18,6 +18,7 @@ const User = ({
   mail,
   height,
   weight,
+  loadUsers
 }: {
   navigation: NavigationProp<ParamListBase>;
   id: number;
@@ -26,6 +27,7 @@ const User = ({
   mail: string;
   height: number;
   weight: number;
+  loadUsers: Function;
 }) => {
   const { setId } = React.useContext(AdminContext);
 
@@ -42,6 +44,7 @@ const User = ({
                 .then((status) => {
                   if (status == 200) {
                     window.alert("User deleted succesfully");
+                    loadUsers()
                   } else {
                     window.alert(
                       `Error while trying to delete the user ${userName}`

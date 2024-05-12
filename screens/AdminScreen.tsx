@@ -27,14 +27,14 @@ type AdminsCreenProps = {
 };
 const AdminScreen = ({ navigation }: AdminsCreenProps) => {
   const [users, setUsers] = React.useState<UserInterface[]>([]);
+  const loadUsers = async () => {
+    const recievedUsers = await getUsers();
+    if (recievedUsers != null) {
+      setUsers(recievedUsers);
+    }
+  };
 
   React.useEffect(() => {
-    const loadUsers = async () => {
-      const recievedUsers = await getUsers();
-      if (recievedUsers != null) {
-        setUsers(recievedUsers);
-      }
-    };
     loadUsers();
   }, []);
 
@@ -56,6 +56,7 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
                 mail={user.userMail}
                 height={user.userHeight}
                 weight={user.userWeight}
+                loadUsers = {loadUsers}
                 navigation={navigation}
               />
             ))}

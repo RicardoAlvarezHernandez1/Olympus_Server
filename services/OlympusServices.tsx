@@ -1,7 +1,7 @@
 import { UserInterface } from "../assets/interfaces/UserInterface";
 import { IpDirection } from "./IpDirection";
 
-const API_URL = `http://${IpDirection()}:8081/olympus/v1`;
+const API_URL = `http://${IpDirection()}:8082/olympus/v1`;
 const REGISTRATION_PATH = "/admin";
 
 export const registerAdmin = async (
