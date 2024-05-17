@@ -1,3 +1,3 @@
 export function IpDirection() {
-  return "192.168.1.65";
+  return "192.168.11.24";
 }

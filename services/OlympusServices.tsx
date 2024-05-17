@@ -94,3 +94,21 @@ export const updateUser = async (
 
   return response.status;
 };
+
+export const addAchievementToUser = async (
+  userId: number,
+  achievementId: number
+): Promise<number> => {
+  const response = await fetch(
+    `${API_URL}/achievements/${achievementId}/users/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.status;
+};
