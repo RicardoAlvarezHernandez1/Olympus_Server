@@ -17,16 +17,16 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 type LoginScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
-const LoginScreen = ({ navigation}: LoginScreenProps ) => {
+const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { isLogged, toggleIsLogged } = React.useContext(AdminContext);
-  const { admin, setAdminName } = React.useContext(AdminContext);
+  const [mail, setMail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const onClickButton = (adminName: string, adminPassword: string) => {
-    if (adminName.trim() == "" || adminPassword.trim() == "") {
+  const onClickButton = () => {
+    if (mail.trim() == "" || password.trim() == "") {
       window.alert("Por favor , rellene los campos necesarios");
     } else {
-      loginAdmin(adminName)
+      loginAdmin(mail, password)
         .then((response) => {
           if (!response.ok) {
             window.alert("El usuario o la contraseña son incorrectos");
@@ -38,8 +38,7 @@ const LoginScreen = ({ navigation}: LoginScreenProps ) => {
           if (!data) {
             return;
           }
-          const password = data.adminPassword;
-          if (adminPassword === password) {
+          if (data === true) {
             toggleIsLogged();
             navigation.navigate("Admin");
           } else {
@@ -51,10 +50,6 @@ const LoginScreen = ({ navigation}: LoginScreenProps ) => {
           window.alert("Administrador no registrado");
         });
     }
-  };
-
-  const setadmin = (text: string) => {
-    setAdminName(text);
   };
 
   return (
@@ -70,8 +65,8 @@ const LoginScreen = ({ navigation}: LoginScreenProps ) => {
           </Text>
           <Text style={styles.description}>You can log in here</Text>
           <TextInput
-            onChangeText={(text) => setAdminName(text)}
-            placeholder="Admin Name..."
+            onChangeText={(text) => setMail(text)}
+            placeholder="Your email..."
             style={styles.inputStyle}
           ></TextInput>
           <TextInput
@@ -82,7 +77,7 @@ const LoginScreen = ({ navigation}: LoginScreenProps ) => {
           ></TextInput>
           <TouchableOpacity
             style={styles.Pressable}
-            onPress={() => onClickButton(admin, password)}
+            onPress={() => onClickButton()}
           >
             <Text style={styles.buttonContent}>Login</Text>
           </TouchableOpacity>

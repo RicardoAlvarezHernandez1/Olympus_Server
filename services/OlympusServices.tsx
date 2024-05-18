@@ -25,13 +25,20 @@ export const registerAdmin = async (
   return response.status;
 };
 
-export const loginAdmin = async (adminName: string): Promise<Response> => {
-  const response = await fetch(`${API_URL}/admins/${adminName.trim()}`, {
-    method: "GET",
+export const loginAdmin = async (
+  adminMail: string,
+  adminPassword: string
+): Promise<Response> => {
+  const response = await fetch(`${API_URL}/admins/verifyAdmin`, {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      adminMail: adminMail,
+      adminPassword: adminPassword,
+    }),
   });
 
   return response;
