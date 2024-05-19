@@ -1,7 +1,7 @@
 import { UserInterface } from "../assets/interfaces/UserInterface";
-import { IpDirection } from "./IpDirection";
 
-const API_URL = `http://${IpDirection()}:8082/olympus/v1`;
+const IPDIRECTION = "192.168.1.65"
+const API_URL = `http://${IPDIRECTION}:8082/olympus/v1`;
 const REGISTRATION_PATH = "/admin";
 
 export const registerAdmin = async (
@@ -98,6 +98,24 @@ export const updateUser = async (
       userWeight: weight,
     }),
   });
+
+  return response.status;
+};
+
+export const addAchievementToUser = async (
+  userId: number,
+  achievementId: number
+): Promise<number> => {
+  const response = await fetch(
+    `${API_URL}/achievements/${achievementId}/users/${userId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   return response.status;
 };

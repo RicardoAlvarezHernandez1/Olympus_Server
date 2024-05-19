@@ -13,6 +13,8 @@ import appColors from "../assets/styles/appColors";
 import LoginScreen from "../screens/LoginScreen";
 import AdminScreen from "../screens/AdminScreen";
 import UpdateScreen from "../screens/UpdateScreen";
+import ListUserScreen from "../screens/ListUserScreen";
+import AchievementScreen from "../screens/AchievementScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -71,9 +73,29 @@ const CustomDrawer = () => {
               }}
             />
             <Drawer.Screen 
-            name="Update" 
-            component={UpdateScreen} 
-            options={{ drawerLabel: () => null }} />
+              name="Update" 
+              component={UpdateScreen} 
+              options={{
+                drawerItemStyle: { height: 0 },
+            }} />
+            <Drawer.Screen 
+              name="Users" 
+              component={ListUserScreen} 
+              options={{
+                drawerIcon: () => (
+                  <Ionicons
+                    name={"person-add-outline"}
+                    size={25}
+                    color={"black"}
+                  />
+                ),
+            }}/>
+            <Drawer.Screen 
+              name="Achievements" 
+              component={AchievementScreen} 
+              options={{
+                drawerItemStyle: { height: 0 },
+            }} />
           </Drawer.Navigator>
         </>
       ) : (
