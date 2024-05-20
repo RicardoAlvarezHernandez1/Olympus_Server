@@ -33,6 +33,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         .then((data) => {
           if (data === true) {
             toggleIsLogged();
+            window.alert("Login Successful");
             navigation.navigate("Admin");
           } else {
             window.alert("Incorrect email or password");

@@ -1,12 +1,21 @@
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import AppColors from "../assets/styles/appColors";
 import { ScrollView } from "react-native-gesture-handler";
-import { getAllAchievementsList } from "../services/OlympusServices";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import {
+  getAllAchievementsFromUser,
+  getAllAchievementsList,
+} from "../services/OlympusServices";
+import {
+  NavigationProp,
+  ParamListBase,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
 import { AchievementInterface } from "../assets/interfaces/AchievementInterface";
 import Achievement from "../components/Achievement";
+import { AdminContext } from "../context/AdminContext";
+import AchievementsMade from "../components/AchievementsMade";
 
 type LoginScreenProps = {
   navigation: NavigationProp<ParamListBase>;
@@ -16,6 +25,20 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
     AchievementInterface[]
   >([]);
 
+  const [currentAchievements, setCurrentAchievements] = React.useState<
+    AchievementInterface[]
+  >([]);
+
+  const { userId } = React.useContext(AdminContext);
+  const [isEmpty, setIsEmpty] = React.useState(false);
+
+  const loadCurrentAchievements = async () => {
+    const recievedAchievements = await getAllAchievementsFromUser(userId);
+    if (recievedAchievements != null) {
+      setCurrentAchievements(recievedAchievements);
+    }
+  };
+
   const loadAchievements = async () => {
     const recievedAchievements = await getAllAchievementsList();
     if (recievedAchievements != null) {
@@ -23,8 +46,26 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
     }
   };
 
+  const checkIfUserDontHaveAchievements = () => {
+    if (currentAchievements.length == 0) {
+      setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      loadAchievements();
+      loadCurrentAchievements();
+      checkIfUserDontHaveAchievements();
+    }, [])
+  );
+
   React.useEffect(() => {
     loadAchievements();
+    loadCurrentAchievements();
+    checkIfUserDontHaveAchievements();
   }, []);
 
   return (
@@ -34,8 +75,26 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
         style={styles.imagebackground}
       >
         <View style={{ ...styles.boxShadow, ...styles.achievementsContainer }}>
-          <Text style={styles.title}>Assign an achievement to the user</Text>
           <ScrollView style={styles.scrollviewStyle}>
+            <Text style={styles.title}>Current user achievements</Text>
+            <>
+              {isEmpty == false ? (
+                currentAchievements.map((currentAchievement) => (
+                  <AchievementsMade
+                    key={currentAchievement.achievementId}
+                    id={currentAchievement.achievementId}
+                    achievementDescription={
+                      currentAchievement.achievementDescription
+                    }
+                    navigation={navigation}
+                  />
+                ))
+              ) : (
+                <Text style={styles.description}>No current achievements</Text>
+              )}
+            </>
+
+            <Text style={styles.title}>Assign an achievement to the user</Text>
             {achievements.map((achievement) => (
               <Achievement
                 key={achievement.achievementId}
@@ -59,10 +118,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "700",
-    fontSize: 35,
+    fontSize: 25,
     textAlign: "center",
     paddingHorizontal: 20,
     paddingTop: 20,
+  },
+  description: {
+    fontSize: 20,
+    fontWeight: 500,
+    marginTop: 20,
+    marginLeft: 60,
   },
   imagebackground: {
     justifyContent: "center",
@@ -74,6 +139,7 @@ const styles = StyleSheet.create({
     width: 350,
     height: 590,
     backgroundColor: AppColors.lightGreen,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,

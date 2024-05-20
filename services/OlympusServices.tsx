@@ -137,3 +137,46 @@ export const getAllAchievementsList = async (): Promise<
     throw error;
   }
 };
+
+export const getAllAchievementsFromUser = async (
+  userId: number
+): Promise<AchievementInterface[]> => {
+  try {
+    const response = await fetch(`${API_URL}/${userId}/achievements`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("Error on get all achievements from user request");
+    }
+
+    const achievements: AchievementInterface[] = await response.json();
+    return achievements;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const deleteAchievementFromUser = async (
+  userId: number,
+  achievementId: number
+): Promise<number> => {
+  try {
+    const response = await fetch(
+      `${API_URL}/achievements/${achievementId}/users/${userId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Error on get all achievements request");
+    }
+
+    return response.status;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};

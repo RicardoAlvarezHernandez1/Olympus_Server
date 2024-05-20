@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View, ImageBackground } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import AppColors from "../assets/styles/appColors";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import {
+  NavigationProp,
+  ParamListBase,
+  useFocusEffect,
+} from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import User from "../components/User";
 import { getUsers } from "../services/OlympusServices";
@@ -30,6 +34,13 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      loadUsers();
+      checkIfUserListIsEmpty();
+    }, [])
+  );
+
   React.useEffect(() => {
     loadUsers();
     checkIfUserListIsEmpty();
@@ -41,7 +52,7 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
         source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
         style={styles.imageBackground}
       >
-        {!isEmpty ? (
+        {isEmpty ? (
           <View style={{ ...styles.boxShadow, ...styles.adminContainer }}>
             <Text style={styles.title}>Users List</Text>
             <ScrollView style={styles.scrollviewStyle}>

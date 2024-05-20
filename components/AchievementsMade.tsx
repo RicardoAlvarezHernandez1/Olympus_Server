@@ -1,11 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import AppColors from "../assets/styles/appColors";
-import { addAchievementToUser } from "../services/OlympusServices";
+import {
+  addAchievementToUser,
+  deleteAchievementFromUser,
+} from "../services/OlympusServices";
 import { AdminContext } from "../context/AdminContext";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
-const Achievement = ({
+const AchievementsMade = ({
   id,
   achievementDescription,
   navigation,
@@ -16,17 +20,17 @@ const Achievement = ({
 }) => {
   const { userId } = React.useContext(AdminContext);
 
-  const onClickSetAchievement = (id: number) => {
+  const onClickDeleteAchievement = (id: number) => {
     if (id == null || id == 0) {
       window.alert("Please insert a valid achievement id");
     } else {
-      addAchievementToUser(userId, id)
+      deleteAchievementFromUser(userId, id)
         .then((response) => {
           if (response != 200) {
             window.alert("Error");
             return null;
           } else {
-            window.alert("Achievement gived succesfully");
+            window.alert("Achievement deleted succesfully");
             navigation.navigate("Admin");
           }
         })
@@ -40,13 +44,14 @@ const Achievement = ({
     <>
       <View style={styles.achievementContainer}>
         <View style={styles.pressableContainer}>
+          <Text style={styles.achievementDescriptionStyle}>
+            {achievementDescription}
+          </Text>
           <Pressable
             style={styles.pressables}
-            onPress={() => onClickSetAchievement(id)}
+            onPress={() => onClickDeleteAchievement(id)}
           >
-            <Text style={styles.achievementDescriptionStyle}>
-              {achievementDescription}
-            </Text>
+            <Ionicons name={"trash-outline"} size={30} color={"black"} />
           </Pressable>
         </View>
       </View>
@@ -54,7 +59,7 @@ const Achievement = ({
   );
 };
 
-export default Achievement;
+export default AchievementsMade;
 
 const styles = StyleSheet.create({
   achievementContainer: {
@@ -68,20 +73,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     marginVertical: 10,
-    marginLeft: 20,
   },
   pressables: {
-    marginHorizontal: 20,
     display: "flex",
     justifyContent: "center",
   },
   pressableContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     width: 200,
   },
   achievementDescriptionStyle: {
     fontSize: 20,
     textAlign: "center",
+    width: 120,
   },
 });
