@@ -1,32 +1,28 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Image,
-  TextInput,
-} from "react-native";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import React from "react";
 import AppColors from "../assets/styles/appColors";
-import {
-  NavigationContainer,
-  NavigationProp,
-  ParamListBase,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { AdminContext } from "../context/AdminContext";
-import { registerAdmin } from "../services/OlympusServices";
-import { Ionicons } from "@expo/vector-icons";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
 import User from "../components/User";
 import { getUsers } from "../services/OlympusServices";
 import { UserInterface } from "../assets/interfaces/UserInterface";
+import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
 
 type AdminsCreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
 const AdminScreen = ({ navigation }: AdminsCreenProps) => {
   const [users, setUsers] = React.useState<UserInterface[]>([]);
+  const [isEmpty, setIsEmpty] = React.useState(false);
+
+  const checkIfUserListIsEmpty = () => {
+    if (users.length == 0) {
+      setIsEmpty(true);
+    } else {
+      setIsEmpty(false);
+    }
+  };
+
   const loadUsers = async () => {
     const recievedUsers = await getUsers();
     if (recievedUsers != null) {
@@ -36,32 +32,40 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
 
   React.useEffect(() => {
     loadUsers();
+    checkIfUserListIsEmpty();
   }, []);
 
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require("./../assets/images/Fondo_Olympus_Server.png")}
-        style={styles.image}
+        source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
+        style={styles.imageBackground}
       >
-        <View style={{ ...styles.boxShadow, ...styles.welcomeContainer }}>
-          <Text style={styles.tittle}>Members List</Text>
-          <ScrollView style={styles.scrollviewStyle}>
-            {users.map((user) => (
-              <User
-                key={user.userId}
-                id={user.userId}
-                name={user.userName}
-                password={user.userPassword}
-                mail={user.userMail}
-                height={user.userHeight}
-                weight={user.userWeight}
-                loadUsers = {loadUsers}
-                navigation={navigation}
-              />
-            ))}
-          </ScrollView>
-        </View>
+        {!isEmpty ? (
+          <View style={{ ...styles.boxShadow, ...styles.adminContainer }}>
+            <Text style={styles.title}>Users List</Text>
+            <ScrollView style={styles.scrollviewStyle}>
+              {users.map((user) => (
+                <User
+                  key={user.userId}
+                  id={user.userId}
+                  name={user.userName}
+                  loadUsers={loadUsers}
+                  navigation={navigation}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        ) : (
+          <View style={{ ...styles.boxShadow, ...styles.noUsersContainer }}>
+            <Text style={styles.title}>Users List</Text>
+            <View>
+              <Text style={styles.noUsersMessage}>
+                There are no users yet...
+              </Text>
+            </View>
+          </View>
+        )}
       </ImageBackground>
     </View>
   );
@@ -75,28 +79,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  image: {
+  imageBackground: {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
     height: "100%",
   },
-  tittle: {
+  title: {
     fontWeight: "700",
     fontSize: 35,
     textAlign: "center",
     paddingHorizontal: 20,
     paddingTop: 20,
   },
-  welcomeContainer: {
+  adminContainer: {
     width: 350,
     height: 470,
     alignItems: "center",
     backgroundColor: AppColors.lightGreen,
     borderRadius: 30,
   },
+  noUsersContainer: {
+    width: 350,
+    height: 200,
+    alignItems: "center",
+    backgroundColor: AppColors.lightGreen,
+    borderRadius: 30,
+  },
   scrollviewStyle: {
     height: 50,
+  },
+  noUsersMessage: {
+    fontWeight: "600",
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 40,
   },
   boxShadow: {
     shadowColor: "black",

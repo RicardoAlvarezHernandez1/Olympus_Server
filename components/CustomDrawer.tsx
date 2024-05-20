@@ -1,11 +1,8 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import {
   DrawerNavigationOptions,
   createDrawerNavigator,
 } from "@react-navigation/drawer";
-//import CustomHeader from './CustomHeader';
-
 import RegisterScreen from "../screens/RegisterScreen";
 import { AdminContext } from "../context/AdminContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -13,7 +10,6 @@ import appColors from "../assets/styles/appColors";
 import LoginScreen from "../screens/LoginScreen";
 import AdminScreen from "../screens/AdminScreen";
 import UpdateScreen from "../screens/UpdateScreen";
-import ListUserScreen from "../screens/ListUserScreen";
 import AchievementScreen from "../screens/AchievementScreen";
 
 const Drawer = createDrawerNavigator();
@@ -46,7 +42,7 @@ const CustomDrawer = () => {
             initialRouteName="WelcomeUser"
             screenOptions={drawerNavigatorScreenOptions}
           >
-             <Drawer.Screen
+            <Drawer.Screen
               name="Admin"
               component={AdminScreen}
               options={{
@@ -60,42 +56,19 @@ const CustomDrawer = () => {
               }}
             />
             <Drawer.Screen
-              name="Registration"
-              component={RegisterScreen}
+              name="Update"
+              component={UpdateScreen}
               options={{
-                drawerIcon: () => (
-                  <Ionicons
-                    name={"person-add-outline"}
-                    size={25}
-                    color={"black"}
-                  />
-                ),
+                drawerItemStyle: { height: 0 },
               }}
             />
-            <Drawer.Screen 
-              name="Update" 
-              component={UpdateScreen} 
+            <Drawer.Screen
+              name="Achievements"
+              component={AchievementScreen}
               options={{
                 drawerItemStyle: { height: 0 },
-            }} />
-            <Drawer.Screen 
-              name="Users" 
-              component={ListUserScreen} 
-              options={{
-                drawerIcon: () => (
-                  <Ionicons
-                    name={"person-add-outline"}
-                    size={25}
-                    color={"black"}
-                  />
-                ),
-            }}/>
-            <Drawer.Screen 
-              name="Achievements" 
-              component={AchievementScreen} 
-              options={{
-                drawerItemStyle: { height: 0 },
-            }} />
+              }}
+            />
           </Drawer.Navigator>
         </>
       ) : (
@@ -124,9 +97,8 @@ const CustomDrawer = () => {
                 <Ionicons name={"log-in-outline"} size={25} color={"black"} />
               ),
             }}
-          />          
-          
-          </Drawer.Navigator>
+          />
+        </Drawer.Navigator>
       )}
     </>
   );

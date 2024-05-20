@@ -6,27 +6,15 @@ import { deleteUser } from "../services/OlympusServices";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { AdminContext } from "../context/AdminContext";
 
-type UserCreenProps = {
-  navigation: NavigationProp<ParamListBase>;
-};
-
 const User = ({
   navigation,
   id,
   name,
-  password,
-  mail,
-  height,
-  weight,
-  loadUsers
+  loadUsers,
 }: {
   navigation: NavigationProp<ParamListBase>;
   id: number;
   name: string;
-  password: string;
-  mail: string;
-  height: number;
-  weight: number;
   loadUsers: Function;
 }) => {
   const { setId } = React.useContext(AdminContext);
@@ -44,7 +32,7 @@ const User = ({
                 .then((status) => {
                   if (status == 200) {
                     window.alert("User deleted succesfully");
-                    loadUsers()
+                    loadUsers();
                   } else {
                     window.alert(
                       `Error while trying to delete the user ${userName}`
@@ -64,20 +52,37 @@ const User = ({
 
   const onClickUpdate = () => {
     setId(id);
-    navigation.navigate("Update", {navigation, loadUsers});
+    navigation.navigate("Update", { navigation, loadUsers });
+  };
+
+  const onClickAchievement = () => {
+    setId(id);
+    navigation.navigate("Achievements");
   };
 
   return (
     <>
       <View style={styles.userContainer}>
-        <Ionicons name={"person-circle-outline"} size={50} color={"black"} />
-        <Text style={styles.userNameStyle}>{name}</Text>
+        <View style={styles.userTitleContainer}>
+          <Ionicons name={"person-circle-outline"} size={50} color={"black"} />
+          <Text style={styles.userNameStyle}>{name}</Text>
+        </View>
+
         <View style={styles.pressableContainer}>
-          <Pressable onPress={() => onClickDelete(id, name)}>
+          <Pressable
+            style={styles.pressables}
+            onPress={() => onClickDelete(id, name)}
+          >
             <Ionicons name={"trash-outline"} size={30} color={"black"} />
           </Pressable>
-          <Pressable onPress={() => onClickUpdate()}>
+          <Pressable style={styles.pressables} onPress={() => onClickUpdate()}>
             <Ionicons name={"pencil-outline"} size={30} color={"black"} />
+          </Pressable>
+          <Pressable
+            style={styles.pressables}
+            onPress={() => onClickAchievement()}
+          >
+            <Ionicons name={"trophy"} size={30} color={"black"} />
           </Pressable>
         </View>
       </View>
@@ -90,23 +95,32 @@ export default User;
 const styles = StyleSheet.create({
   userContainer: {
     width: 300,
-    height: 80,
+    height: 160,
     backgroundColor: AppColors.white,
-    flexDirection: "row",
-    alignContent: "center",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     borderColor: "black",
     borderWidth: 2,
     borderRadius: 15,
     marginVertical: 10,
   },
+  userTitleContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  pressables: {
+    marginHorizontal: 20,
+  },
   pressableContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: 100,
+    width: 200,
   },
   userNameStyle: {
     fontSize: 20,
+    marginTop: 12,
+    marginLeft: 5,
   },
 });

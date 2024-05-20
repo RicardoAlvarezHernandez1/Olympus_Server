@@ -1,15 +1,15 @@
+import { AchievementInterface } from "../assets/interfaces/AchievementInterface";
 import { UserInterface } from "../assets/interfaces/UserInterface";
+import { IP_DIRECTION } from "../constants/global.const";
 
-const IPDIRECTION = "192.168.1.65"
-const API_URL = `http://${IPDIRECTION}:8082/olympus/v1`;
-const REGISTRATION_PATH = "/admin";
+const API_URL = `http://${IP_DIRECTION}:8082/olympus/v1`;
 
 export const registerAdmin = async (
   adminName: string,
   adminMail: string,
   adminPassword: string
 ): Promise<number> => {
-  const response = await fetch(`${API_URL}${REGISTRATION_PATH}`, {
+  const response = await fetch(`${API_URL}/admin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -51,13 +51,13 @@ export const getUsers = async (): Promise<UserInterface[]> => {
     });
 
     if (!response.ok) {
-      throw new Error("Error al obtener usuarios");
+      throw new Error("Error getting users");
     }
 
     const users: UserInterface[] = await response.json();
     return users;
   } catch (error) {
-    console.error("Error al obtener usuarios:", error);
+    console.error("Error getting users:", error);
     throw error;
   }
 };
@@ -82,8 +82,6 @@ export const updateUser = async (
   height: number,
   weight: number
 ): Promise<number> => {
-  console.log("Log desde el servicio : ", id);
-
   const response = await fetch(`${API_URL}/user/${id}`, {
     method: "PUT",
     headers: {
@@ -118,4 +116,24 @@ export const addAchievementToUser = async (
   );
 
   return response.status;
+};
+
+export const getAllAchievementsList = async (): Promise<
+  AchievementInterface[]
+> => {
+  try {
+    const response = await fetch(`${API_URL}/achievements`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("Error on get all achievements request");
+    }
+
+    const achievements: AchievementInterface[] = await response.json();
+    return achievements;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
 };

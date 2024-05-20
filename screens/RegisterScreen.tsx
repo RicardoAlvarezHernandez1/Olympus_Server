@@ -8,25 +8,22 @@ import {
 } from "react-native";
 import React from "react";
 import AppColors from "../assets/styles/appColors";
-import {
-  NavigationContainer,
-  NavigationProp,
-  ParamListBase,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AdminContext } from "../context/AdminContext";
 import { registerAdmin } from "../services/OlympusServices";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  OLYMPUS_SERVER_BACKGROUND_IMAGE,
+  validateEmail,
+} from "../constants/global.const";
 
-type WelcomeScreenProps = {
+type RegisterScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
-const RegisterScreen = ({ navigation }: WelcomeScreenProps) => {
+const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
   const { admin, setAdminName } = React.useContext(AdminContext);
   const [adminEmail, setadminEmail] = React.useState("");
   const [adminPassword, setadminPassword] = React.useState("");
-  const [isSuccesfull, setisSuccesfull] = React.useState(201);
 
   function setAdmin(text: string) {
     setAdminName(text);
@@ -45,18 +42,20 @@ const RegisterScreen = ({ navigation }: WelcomeScreenProps) => {
   ) => {
     {
       if (adminName == "" || adminEmail == "" || adminPassword == "") {
-        window.alert("Por favor , rellene los campos necesarios");
-      } else {
+        window.alert("Please , fill in the required fields");
+      } else if (validateEmail(adminEmail)) {
         registerAdmin(adminName, adminEmail, adminPassword)
           .then((status) => {
             if (status == 400) {
-              window.alert("Error : no se a podido registrar el usuario");
+              window.alert("Error : user could not be registered");
               return null;
             } else {
-              window.alert("Registro exitoso");
+              window.alert("Successful registration");
             }
           })
           .catch((err) => console.log(err));
+      } else {
+        window.alert("Please enter a valid email address");
       }
     }
   };
@@ -64,7 +63,7 @@ const RegisterScreen = ({ navigation }: WelcomeScreenProps) => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require("./../assets/images/Fondo_Olympus_Server.png")}
+        source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
         style={styles.image}
       >
         <View style={{ ...styles.boxShadow, ...styles.welcomeContainer }}>

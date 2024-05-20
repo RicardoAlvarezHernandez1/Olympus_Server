@@ -6,7 +6,7 @@ type AdminProviderProps = {
   children: JSX.Element | JSX.Element[];
 };
 
-const adminProvider = (props: AdminProviderProps) => {
+const AdminProvider = (props: AdminProviderProps) => {
   const { children } = props;
 
   const [admin, setadmin] = React.useState("");
@@ -36,4 +36,4 @@ const adminProvider = (props: AdminProviderProps) => {
   );
 };
 
-export default adminProvider;
+export default AdminProvider;

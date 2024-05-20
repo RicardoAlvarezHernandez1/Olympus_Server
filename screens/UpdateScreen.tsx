@@ -8,27 +8,22 @@ import {
 } from "react-native";
 import React from "react";
 import AppColors from "../assets/styles/appColors";
-import {
-  NavigationProp,
-  ParamListBase,
-  RouteProp,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import { AdminContext } from "../context/AdminContext";
-import {  updateUser } from "../services/OlympusServices";
+import { updateUser } from "../services/OlympusServices";
+import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
+import appColors from "../assets/styles/appColors";
 
-
-
-// Define el tipo de las rutas
 type RootStackParamList = {
-  Update: { loadUsers: Function, navigation: NavigationProp<ParamListBase> };
+  Update: { loadUsers: Function; navigation: any };
 };
+type UpdateScreenRouteProp = RouteProp<RootStackParamList, "Update">;
 
-const UpdateScreen = ({ route }: { route: RouteProp<RootStackParamList, "Update"> }) => {
+const UpdateScreen = () => {
+  const route = useRoute<UpdateScreenRouteProp>();
   const { userId } = React.useContext(AdminContext);
   const { loadUsers, navigation } = route.params;
-
 
   const [user_Name, setUsername] = React.useState("");
   const [user_Mail, setUserMail] = React.useState("");
@@ -52,17 +47,17 @@ const UpdateScreen = ({ route }: { route: RouteProp<RootStackParamList, "Update"
         height == null ||
         weight == null
       ) {
-        window.alert("Por favor , rellene los campos necesarios");
+        window.alert("Please , fill in the required fields");
       } else {
         updateUser(id, name, mail, password, height, weight)
           .then((status) => {
             if (status == 400) {
-              window.alert("Error : no se a podido registrar el usuario");
+              window.alert("Error : failed to update the user");
               return null;
             } else {
               window.alert("Succesfully update");
-              loadUsers()
-              navigation.navigate("Admin")
+              loadUsers();
+              navigation.navigate("Admin");
             }
           })
           .catch((err) => console.log(err));
@@ -73,11 +68,11 @@ const UpdateScreen = ({ route }: { route: RouteProp<RootStackParamList, "Update"
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require("./../assets/images/Fondo_Olympus_Server.png")}
-        style={styles.image}
+        source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
+        style={styles.imageBackground}
       >
-        <View style={{ ...styles.boxShadow, ...styles.welcomeContainer }}>
-          <Text style={styles.welcomeTitle}>Editing user</Text>
+        <View style={{ ...styles.boxShadow, ...styles.updateContainer }}>
+          <Text style={styles.updateTitle}>Editing user</Text>
           <ScrollView>
             <Text style={styles.description}>Name</Text>
             <TextInput
@@ -112,8 +107,11 @@ const UpdateScreen = ({ route }: { route: RouteProp<RootStackParamList, "Update"
               placeholder="Height..."
               style={styles.inputStyle}
             ></TextInput>
-            <Pressable onPress={() => onClickUpdateButton()}>
-              <Text>Hola</Text>
+            <Pressable
+              style={styles.touchable}
+              onPress={() => onClickUpdateButton()}
+            >
+              <Text style={styles.buttonContent}>Update</Text>
             </Pressable>
           </ScrollView>
         </View>
@@ -130,13 +128,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  image: {
+  imageBackground: {
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
     height: "100%",
   },
-  welcomeTitle: {
+  updateTitle: {
     fontWeight: "700",
     fontSize: 35,
     textAlign: "center",
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   description: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "400",
     textAlign: "center",
     marginTop: 10,
@@ -156,36 +154,30 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
   },
-  welcomeContainer: {
+  updateContainer: {
     width: 300,
-    height: 600,
+    height: 650,
     alignItems: "center",
     backgroundColor: AppColors.greenishWhite,
     borderRadius: 30,
   },
   buttonContent: {
-    color: "black",
+    color: appColors.white,
     fontWeight: "700",
   },
   touchable: {
+    flexDirection: "row",
+    width: 95,
     marginTop: 30,
     marginBottom: 15,
     borderColor: "white",
     borderWidth: 2,
-    borderRadius: 15,
+    borderRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: AppColors.darkGreen,
-  },
-  login: {
-    marginTop: 10,
-    marginBottom: 15,
-    borderColor: "white",
-    borderWidth: 2,
-    borderRadius: 15,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: AppColors.green,
+    textAlign: "center",
+    marginLeft: 75,
   },
   boxShadow: {
     shadowColor: "black",

@@ -1,53 +1,46 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  Pressable,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import AppColors from "../assets/styles/appColors";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { AdminContext } from "../context/AdminContext";
 import { loginAdmin } from "../services/OlympusServices";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
 
 type LoginScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
 const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const { isLogged, toggleIsLogged } = React.useContext(AdminContext);
+  const { toggleIsLogged } = React.useContext(AdminContext);
   const [mail, setMail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const onClickButton = () => {
-    if (mail.trim() == "" || password.trim() == "") {
-      window.alert("Por favor , rellene los campos necesarios");
+    const userMail: string = mail;
+    const userPassword: string = password;
+
+    if (userMail.trim() == "" || userPassword.trim() == "") {
+      window.alert("Please , fill in the required fields");
     } else {
-      loginAdmin(mail, password)
+      loginAdmin(userMail, userPassword)
         .then((response) => {
           if (!response.ok) {
-            window.alert("El usuario o la contraseña son incorrectos");
+            window.alert("Incorrect email or password");
             return null;
           }
           return response.json();
         })
         .then((data) => {
-          if (!data) {
-            return;
-          }
           if (data === true) {
             toggleIsLogged();
             navigation.navigate("Admin");
           } else {
-            window.alert("El usuario o la contraseña son incorrectos");
+            window.alert("Incorrect email or password");
           }
         })
         .catch((error) => {
-          console.error("Error en la solicitud: ", error);
-          window.alert("Administrador no registrado");
+          console.error("Request error : ", error);
+          window.alert("Unregistered Administrator");
         });
     }
   };
@@ -55,11 +48,11 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require("./../assets/images/Fondo_Olympus_Server.png")}
+        source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
         style={styles.imagebackground}
       >
-        <View style={styles.welcomeContainer}>
-          <Text style={styles.welcomeTitle}>Log In</Text>
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginTitle}>Log In</Text>
           <Text style={styles.description}>
             Oh you already have an account?
           </Text>
@@ -95,11 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  image: {
-    width: 150,
-    height: 150,
-  },
-  welcomeTitle: {
+  loginTitle: {
     fontWeight: "700",
     fontSize: 35,
     textAlign: "center",
@@ -118,7 +107,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  welcomeContainer: {
+  loginContainer: {
     width: 300,
     height: 400,
     backgroundColor: AppColors.lightGreen,
@@ -130,9 +119,6 @@ const styles = StyleSheet.create({
   buttonContent: {
     color: "black",
     fontWeight: "700",
-  },
-  icon: {
-    marginRight: 5,
   },
   Pressable: {
     flexDirection: "row",
