@@ -46,16 +46,6 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
     }
   };
 
-  const checkIfUserDontHaveAchievements = async  () => {
-    console.log(currentAchievements);
-    await loadCurrentAchievements()
-    if (currentAchievements.length == 0) {
-      setIsEmpty(true);
-    } else {
-      setIsEmpty(false);
-    } 
-  };
-
   useFocusEffect(
     useCallback(() => {
       const fetchData = async () => {
