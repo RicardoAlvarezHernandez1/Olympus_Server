@@ -10,18 +10,23 @@ import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
 type LoginScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
+// LoginScreen component definition
 const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { toggleIsLogged } = React.useContext(AdminContext);
   const [mail, setMail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+  // Function to handle button click
   const onClickButton = () => {
     const userMail: string = mail;
     const userPassword: string = password;
 
+    // Check if email and password are provided
     if (userMail.trim() == "" || userPassword.trim() == "") {
       window.alert("Please , fill in the required fields");
     } else {
+      // Call loginAdmin service function
       loginAdmin(userMail, userPassword)
         .then((response) => {
           if (!response.ok) {
@@ -31,6 +36,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           return response.json();
         })
         .then((data) => {
+          // If login is successful use toggleIsLogged function and navigate to admin screen
           if (data === true) {
             toggleIsLogged();
             window.alert("Login Successful");
@@ -46,6 +52,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     }
   };
 
+  // Return the UI for LoginScreen component
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
@@ -81,8 +88,10 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   );
 };
 
+// Export the LoginScreen component
 export default LoginScreen;
 
+// Styles for the LoginScreen component
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 20,

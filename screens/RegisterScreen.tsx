@@ -20,9 +20,13 @@ import {
 type RegisterScreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+// RegisterScreen component definition
 const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
+  // Admin name and set admin name using admin context
   const { admin, setAdminName } = React.useContext(AdminContext);
+  // Admin mail state
   const [adminEmail, setadminEmail] = React.useState("");
+  // Admin password state
   const [adminPassword, setadminPassword] = React.useState("");
 
   function setAdmin(text: string) {
@@ -35,21 +39,27 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     setadminPassword(text);
   }
 
+  // Function to handle button click
   const onClickButton = (
     adminName: string,
     adminEmail: string,
     adminPassword: string
   ) => {
     {
+      // Check if required fills are not empty
       if (adminName == "" || adminEmail == "" || adminPassword == "") {
         window.alert("Please , fill in the required fields");
+        // Check that the email is in a good format
       } else if (validateEmail(adminEmail)) {
+        // Call function for register admin
         registerAdmin(adminName, adminEmail, adminPassword)
           .then((status) => {
             if (status == 400) {
+              // Alert for error
               window.alert("Error : user could not be registered");
               return null;
             } else {
+              // Alert if the registration was successfuly
               window.alert("Successful registration");
             }
           })
@@ -60,6 +70,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     }
   };
 
+  // Return the UI for RegisterScreen component
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
@@ -108,8 +119,10 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
   );
 };
 
+// Export the RegisterScreen component
 export default RegisterScreen;
 
+// Styles for the RegisterScreen component
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 20,

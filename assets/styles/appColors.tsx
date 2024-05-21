@@ -1,3 +1,4 @@
+// Definition of application color palette
 const appColors = {
   limeGreen: "#84F000",
   green: "#09E63F",
@@ -7,4 +8,6 @@ const appColors = {
   lightGreen: "#DAEDD8",
   white: "#FFFFFF",
 };
+
+// Export the object so it can be imported and used in other files
 export default appColors;

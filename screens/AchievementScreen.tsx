@@ -75,7 +75,6 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
     checkIfUserDontHaveAchievements();
   }, [currentAchievements]);
   return (
-  
     <View style={styles.mainContainer}>
       <ImageBackground
         source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
@@ -84,11 +83,14 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
         <View style={{ ...styles.boxShadow, ...styles.achievementsContainer }}>
           <ScrollView style={styles.scrollviewStyle}>
             <Text style={styles.title}>Current user achievements</Text>
-              {isEmpty == false ? (
-                currentAchievements.map((currentAchievement) => (            
-                <View  style={styles.currentAchievementsContainer}>
+            {isEmpty == false ? (
+              currentAchievements.map((currentAchievement) => (
+                <View
+                  key={currentAchievement.achievementId}
+                  style={styles.currentAchievementsContainer}
+                >
                   <AchievementsMade
-                    
+                    key={currentAchievement.achievementId}
                     id={currentAchievement.achievementId}
                     achievementDescription={
                       currentAchievement.achievementDescription
@@ -96,10 +98,10 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
                     navigation={navigation}
                   />
                 </View>
-                ))
-              ) : (
-                <Text style={styles.description}>No current achievements</Text>
-              )}
+              ))
+            ) : (
+              <Text style={styles.description}>No current achievements</Text>
+            )}
             <Text style={styles.title}>Assign an achievement to the user</Text>
             {achievements.map((achievement) => (
               <Achievement
@@ -133,8 +135,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 20,
     marginTop: 20,
-    alignSelf: "center"
-
+    alignSelf: "center",
   },
   imagebackground: {
     justifyContent: "center",
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
   },
-  currentAchievementsContainer:{
+  currentAchievementsContainer: {
     justifyContent: "center",
     alignItems: "center",
   },

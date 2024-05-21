@@ -15,23 +15,29 @@ import { updateUser } from "../services/OlympusServices";
 import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
 import appColors from "../assets/styles/appColors";
 
+// Defining navigation route types
 type RootStackParamList = {
   Update: { loadUsers: Function; navigation: any };
 };
 type UpdateScreenRouteProp = RouteProp<RootStackParamList, "Update">;
 
+// Definition of the UpdateScreen component
 const UpdateScreen = () => {
+  // Using the route to get necessary parameters
   const route = useRoute<UpdateScreenRouteProp>();
   const { userId } = React.useContext(AdminContext);
   const { loadUsers, navigation } = route.params;
 
+  // Defining states for user data
   const [user_Name, setUsername] = React.useState("");
   const [user_Mail, setUserMail] = React.useState("");
   const [user_Password, setUserPassword] = React.useState("");
   const [user_Height, setHeight] = React.useState(0);
   const [user_Weight, setWeight] = React.useState(0);
 
+  // Function to handle click event on update button
   const onClickUpdateButton = () => {
+    // Getting user data from states
     const id = userId;
     const name = user_Name;
     const mail = user_Mail;
@@ -40,6 +46,7 @@ const UpdateScreen = () => {
     const weight = user_Weight;
 
     {
+      // Validation of input fields
       if (
         name == "" ||
         mail == "" ||
@@ -49,6 +56,7 @@ const UpdateScreen = () => {
       ) {
         window.alert("Please , fill in the required fields");
       } else {
+        // Calling function to update user
         updateUser(id, name, mail, password, height, weight)
           .then((status) => {
             if (status == 400) {
@@ -65,6 +73,7 @@ const UpdateScreen = () => {
     }
   };
 
+  // Return the UI for Update Screen component
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
@@ -120,8 +129,10 @@ const UpdateScreen = () => {
   );
 };
 
+// Export the Update Screen component
 export default UpdateScreen;
 
+// Styles for the Update Screen component
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 20,

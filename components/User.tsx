@@ -6,6 +6,7 @@ import { deleteUser } from "../services/OlympusServices";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import { AdminContext } from "../context/AdminContext";
 
+// User component definition
 const User = ({
   navigation,
   id,
@@ -17,8 +18,10 @@ const User = ({
   name: string;
   loadUsers: Function;
 }) => {
+  // Getting setId function from AdminContext
   const { setId } = React.useContext(AdminContext);
 
+  // Function to handle user deletion
   const onClickDelete = (userId: number, userName: string) => {
     {
       Alert.alert(
@@ -31,9 +34,11 @@ const User = ({
               deleteUser(userId)
                 .then((status) => {
                   if (status == 200) {
+                    // Alert success and reload users
                     window.alert("User deleted succesfully");
                     loadUsers();
                   } else {
+                    // Alert if there's an error
                     window.alert(
                       `Error while trying to delete the user ${userName}`
                     );
@@ -50,16 +55,19 @@ const User = ({
     }
   };
 
+  // Function to handle user update
   const onClickUpdate = () => {
     setId(id);
     navigation.navigate("Update", { navigation, loadUsers });
   };
 
+  // Function to handle achievements for the user
   const onClickAchievement = () => {
     setId(id);
     navigation.navigate("Achievements");
   };
 
+  // Return the UI for User component
   return (
     <>
       <View style={styles.userContainer}>
@@ -90,8 +98,10 @@ const User = ({
   );
 };
 
+// Exporting the User component
 export default User;
 
+// Styles for the User component
 const styles = StyleSheet.create({
   userContainer: {
     width: 300,

@@ -15,10 +15,14 @@ import { OLYMPUS_SERVER_BACKGROUND_IMAGE } from "../constants/global.const";
 type AdminsCreenProps = {
   navigation: NavigationProp<ParamListBase>;
 };
+
+// AdminScreen component definition
 const AdminScreen = ({ navigation }: AdminsCreenProps) => {
+  // State for users and isEmpty flag
   const [users, setUsers] = React.useState<UserInterface[]>([]);
   const [isEmpty, setIsEmpty] = React.useState(false);
 
+  // Function to check if user list is empty
   const checkIfUserListIsEmpty = () => {
     if (users.length == 0) {
       setIsEmpty(true);
@@ -27,6 +31,7 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
     }
   };
 
+  // Function to load users
   const loadUsers = async () => {
     const recievedUsers = await getUsers();
     if (recievedUsers != null) {
@@ -34,6 +39,7 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
     }
   };
 
+  // Load users and check if list is empty on focus
   useFocusEffect(
     useCallback(() => {
       loadUsers();
@@ -41,11 +47,13 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
     }, [])
   );
 
+  // Load users and check if list is empty on initial render
   React.useEffect(() => {
     loadUsers();
     checkIfUserListIsEmpty();
   }, []);
 
+  // Return the UI for AdminScreen component
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
@@ -82,8 +90,10 @@ const AdminScreen = ({ navigation }: AdminsCreenProps) => {
   );
 };
 
+// Export the AdminScreen component
 export default AdminScreen;
 
+// Styles for the AdminScreen component
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 20,

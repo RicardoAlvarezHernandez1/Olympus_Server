@@ -2,8 +2,16 @@ import { AchievementInterface } from "../assets/interfaces/AchievementInterface"
 import { UserInterface } from "../assets/interfaces/UserInterface";
 import { IP_DIRECTION } from "../constants/global.const";
 
+// Defining the base URL for the API
 const API_URL = `http://${IP_DIRECTION}:8082/olympus/v1`;
 
+/**
+ * Register a new admin.
+ * @param adminName - Name of the admin.
+ * @param adminMail - Email of the admin.
+ * @param adminPassword - Password of the admin.
+ * @returns The HTTP status code of the response.
+ */
 export const registerAdmin = async (
   adminName: string,
   adminMail: string,
@@ -25,6 +33,12 @@ export const registerAdmin = async (
   return response.status;
 };
 
+/**
+ * Log in an admin.
+ * @param adminMail - Email of the admin.
+ * @param adminPassword - Password of the admin.
+ * @returns The Response object from the fetch request.
+ */
 export const loginAdmin = async (
   adminMail: string,
   adminPassword: string
@@ -44,6 +58,10 @@ export const loginAdmin = async (
   return response;
 };
 
+/**
+ * Get a list of all users.
+ * @returns An array of UserInterface objects.
+ */
 export const getUsers = async (): Promise<UserInterface[]> => {
   try {
     const response = await fetch(`${API_URL}/user`, {
@@ -62,6 +80,11 @@ export const getUsers = async (): Promise<UserInterface[]> => {
   }
 };
 
+/**
+ * Delete a user by their ID.
+ * @param userId - The ID of the user to delete.
+ * @returns The HTTP status code of the response.
+ */
 export const deleteUser = async (userId: number): Promise<number> => {
   const response = await fetch(`${API_URL}/user/${userId}`, {
     method: "DELETE",
@@ -74,6 +97,16 @@ export const deleteUser = async (userId: number): Promise<number> => {
   return response.status;
 };
 
+/**
+ * Update a user's details.
+ * @param id - The ID of the user.
+ * @param name - The updated name of the user.
+ * @param mail - The updated email of the user.
+ * @param password - The updated password of the user.
+ * @param height - The updated height of the user.
+ * @param weight - The updated weight of the user.
+ * @returns The HTTP status code of the response.
+ */
 export const updateUser = async (
   id: number,
   name: string,
@@ -100,6 +133,12 @@ export const updateUser = async (
   return response.status;
 };
 
+/**
+ * Add an achievement to a user.
+ * @param userId - The ID of the user.
+ * @param achievementId - The ID of the achievement to add.
+ * @returns The HTTP status code of the response.
+ */
 export const addAchievementToUser = async (
   userId: number,
   achievementId: number
@@ -118,6 +157,10 @@ export const addAchievementToUser = async (
   return response.status;
 };
 
+/**
+ * Get a list of all achievements.
+ * @returns An array of AchievementInterface objects.
+ */
 export const getAllAchievementsList = async (): Promise<
   AchievementInterface[]
 > => {
@@ -138,6 +181,11 @@ export const getAllAchievementsList = async (): Promise<
   }
 };
 
+/**
+ * Get a list of all achievements for a specific user.
+ * @param userId - The ID of the user.
+ * @returns An array of AchievementInterface objects.
+ */
 export const getAllAchievementsFromUser = async (
   userId: number
 ): Promise<AchievementInterface[]> => {
@@ -158,6 +206,12 @@ export const getAllAchievementsFromUser = async (
   }
 };
 
+/**
+ * Delete an achievement from a user.
+ * @param userId - The ID of the user.
+ * @param achievementId - The ID of the achievement to delete.
+ * @returns The HTTP status code of the response.
+ */
 export const deleteAchievementFromUser = async (
   userId: number,
   achievementId: number

@@ -14,9 +14,12 @@ import AchievementScreen from "../screens/AchievementScreen";
 
 const Drawer = createDrawerNavigator();
 
+// CustomDrawer component definition
 const CustomDrawer = () => {
+  // Getting isLogged and toggleIsLogged from AdminContext
   const { isLogged, toggleIsLogged } = React.useContext(AdminContext);
 
+  // Options for drawer navigation screens
   const drawerNavigatorScreenOptions: DrawerNavigationOptions = {
     headerTitle: "OLYMPUS",
     headerTitleAlign: "center",
@@ -34,6 +37,7 @@ const CustomDrawer = () => {
     drawerType: "front",
   };
 
+  // Return the UI for CustomDrawer component based on user authentication
   return (
     <>
       {isLogged ? (

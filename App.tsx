@@ -4,6 +4,7 @@ import { NavigationContainer, Theme } from "@react-navigation/native";
 import CustomDrawer from "./components/CustomDrawer";
 import AdminProvider from "./providers/AdminProvider";
 
+// Main App component
 export default function App() {
   return (
     <View style={styles.appContainer}>
@@ -16,6 +17,7 @@ export default function App() {
   );
 }
 
+// Stylesheet for the app container
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
