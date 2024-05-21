@@ -46,29 +46,46 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
     }
   };
 
-  const checkIfUserDontHaveAchievements = () => {
+  const checkIfUserDontHaveAchievements = async  () => {
+    console.log(currentAchievements);
+    await loadCurrentAchievements()
     if (currentAchievements.length == 0) {
       setIsEmpty(true);
     } else {
       setIsEmpty(false);
-    }
+    } 
   };
 
   useFocusEffect(
     useCallback(() => {
-      loadAchievements();
-      loadCurrentAchievements();
-      checkIfUserDontHaveAchievements();
+      const fetchData = async () => {
+        await loadAchievements();
+        await loadCurrentAchievements();
+      };
+      fetchData();
     }, [])
   );
 
   React.useEffect(() => {
-    loadAchievements();
-    loadCurrentAchievements();
-    checkIfUserDontHaveAchievements();
+    const fetchData = async () => {
+      await loadAchievements();
+      await loadCurrentAchievements();
+    };
+    fetchData();
   }, []);
 
+  React.useEffect(() => {
+    const checkIfUserDontHaveAchievements = () => {
+      if (currentAchievements.length === 0) {
+        setIsEmpty(true);
+      } else {
+        setIsEmpty(false);
+      }
+    };
+    checkIfUserDontHaveAchievements();
+  }, [currentAchievements]);
   return (
+  
     <View style={styles.mainContainer}>
       <ImageBackground
         source={OLYMPUS_SERVER_BACKGROUND_IMAGE}
@@ -77,23 +94,22 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
         <View style={{ ...styles.boxShadow, ...styles.achievementsContainer }}>
           <ScrollView style={styles.scrollviewStyle}>
             <Text style={styles.title}>Current user achievements</Text>
-            <>
               {isEmpty == false ? (
-                currentAchievements.map((currentAchievement) => (
+                currentAchievements.map((currentAchievement) => (            
+                <View  style={styles.currentAchievementsContainer}>
                   <AchievementsMade
-                    key={currentAchievement.achievementId}
+                    
                     id={currentAchievement.achievementId}
                     achievementDescription={
                       currentAchievement.achievementDescription
                     }
                     navigation={navigation}
                   />
+                </View>
                 ))
               ) : (
                 <Text style={styles.description}>No current achievements</Text>
               )}
-            </>
-
             <Text style={styles.title}>Assign an achievement to the user</Text>
             {achievements.map((achievement) => (
               <Achievement
@@ -101,6 +117,7 @@ const AchievementScreen = ({ navigation }: LoginScreenProps) => {
                 id={achievement.achievementId}
                 achievementDescription={achievement.achievementDescription}
                 navigation={navigation}
+                loadCurrentAchievements={loadCurrentAchievements}
               />
             ))}
           </ScrollView>
@@ -125,9 +142,9 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 20,
-    fontWeight: 500,
     marginTop: 20,
-    marginLeft: 60,
+    alignSelf: "center"
+
   },
   imagebackground: {
     justifyContent: "center",
@@ -143,6 +160,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
+  },
+  currentAchievementsContainer:{
+    justifyContent: "center",
+    alignItems: "center",
   },
   scrollviewStyle: {
     height: 50,

@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import AppColors from "../assets/styles/appColors";
 import { addAchievementToUser } from "../services/OlympusServices";
@@ -9,10 +9,12 @@ const Achievement = ({
   id,
   achievementDescription,
   navigation,
+  loadCurrentAchievements,
 }: {
   id: number;
   achievementDescription: string;
   navigation: NavigationProp<ParamListBase>;
+  loadCurrentAchievements: Function;
 }) => {
   const { userId } = React.useContext(AdminContext);
 
@@ -26,7 +28,20 @@ const Achievement = ({
             window.alert("Error");
             return null;
           } else {
-            window.alert("Achievement gived succesfully");
+            {
+              Alert.alert(
+                `Succesfull`,
+                `Achievement gived successfully`,
+                [
+                  {
+                    text: "Confirm",
+                    onPress: () => {
+                      loadCurrentAchievements()
+                    }       
+                  },
+                ]
+              );
+            }
             navigation.navigate("Admin");
           }
         })
