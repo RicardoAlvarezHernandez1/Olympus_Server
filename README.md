@@ -11,7 +11,7 @@ The links to other repositories are:
 - [Backend](https://github.com/AleVallejoGarcia/Olympus_API)
 
 ## Node and library instalation
-For the following step is required to have installed node. You can check out for more information in [this link](https://nodejs.org/en/download/package-manager) and we also need expo if you have node you hsould be able to install it with the following command:
+For the following step is required to have installed node. You can check out for more information in [this link](https://nodejs.org/en/download/package-manager) and we also need expo if you have node you should be able to install it with the following command:
 
 ```npm install -g expo-cli```
 
@@ -22,6 +22,9 @@ In the project root folder we first execute the next command to install the requ
 ```npm i```
 
 ## Execute the app
+
+First of all you should have the backend running, you cand find how to run it in it's own readme.
+
 To execute the application we need to execute the next command:
 
 ```npm runt start```
