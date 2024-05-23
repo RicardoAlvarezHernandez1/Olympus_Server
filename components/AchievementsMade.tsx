@@ -22,7 +22,8 @@ const AchievementsMade = ({
   // Getting userId from AdminContext
   const { userId } = React.useContext(AdminContext);
 
-  // Function to handle deleting achievement from user
+  /** Function to handle deleting achievement from user
+  @param id - Id of the achievement*/
   const onClickDeleteAchievement = (id: number) => {
     // Check if id is valid
     if (id == null || id == 0) {

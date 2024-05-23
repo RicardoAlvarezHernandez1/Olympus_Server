@@ -20,7 +20,8 @@ const Achievement = ({
   // Getting userId from AdminContext
   const { userId } = React.useContext(AdminContext);
 
-  // Function to handle setting achievement to user
+/** Function to handle setting achievement to user
+ * @param id - Id of the achievement */
   const onClickSetAchievement = (id: number) => {
     // Check if id is valid
     if (id == null || id == 0) {

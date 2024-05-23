@@ -29,17 +29,37 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
   // Admin password state
   const [adminPassword, setadminPassword] = React.useState("");
 
+  /**
+   * 
+   * @param text 
+   */
   function setAdmin(text: string) {
     setAdminName(text);
   }
+
+  /**
+   * 
+   * @param text 
+   */
   function setEmail(text: string) {
     setadminEmail(text);
   }
+
+  /**
+   * 
+   * @param text 
+   */
   function setPassword(text: string) {
     setadminPassword(text);
   }
 
   // Function to handle button click
+  /**
+   * 
+   * @param adminName 
+   * @param adminEmail 
+   * @param adminPassword 
+   */
   const onClickButton = (
     adminName: string,
     adminEmail: string,

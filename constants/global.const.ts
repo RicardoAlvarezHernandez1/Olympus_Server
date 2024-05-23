@@ -1,5 +1,5 @@
 // Constant for IP address
-export const IP_DIRECTION = "192.168.1.33";
+export const IP_DIRECTION = "192.168.11.39";
 
 // Constant for Olympus server background image
 export const OLYMPUS_SERVER_BACKGROUND_IMAGE = require("../assets/images/Fondo_Olympus_Server.png");

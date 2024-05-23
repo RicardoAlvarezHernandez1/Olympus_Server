@@ -22,6 +22,11 @@ const User = ({
   const { setId } = React.useContext(AdminContext);
 
   // Function to handle user deletion
+  /**
+   * 
+   * @param userId - id of the user to delete
+   * @param userName - name of the user to delete
+   */
   const onClickDelete = (userId: number, userName: string) => {
     {
       Alert.alert(
